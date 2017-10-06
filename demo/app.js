@@ -2,11 +2,12 @@
 
 import Carousel from '../src/carousel';
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
+import createReactClass from 'create-react-class';
 
 window.React = React;
 
-const ControlledCarousel = React.createClass({
+const ControlledCarousel = createReactClass({
   mixins: [Carousel.ControllerMixin],
 
   getInitialState() { return { slideIndex: 0 }; },
@@ -106,4 +107,4 @@ const App = () => (
 
 const content = document.getElementById('content');
 
-ReactDom.render(<App/>, content)
+ReactDOM.render(<App/>, content)

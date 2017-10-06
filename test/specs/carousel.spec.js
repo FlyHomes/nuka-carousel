@@ -4,6 +4,7 @@ describe('Carousel', function () {
 
   var React = require('react');
   var ReactDOM = require('react-dom');
+  var createReactClass = require('create-react-class');
   var TestUtils = require('react-addons-test-utils');
 
   var carousel, container, component;
@@ -523,7 +524,7 @@ describe('Carousel', function () {
       function() {
         function createDecorator(position, label, passedClass) {
           return {
-            component: React.createClass({
+            component: createReactClass({
               render() {
                 return(<div className={passedClass}>
                   {label}
