@@ -626,18 +626,23 @@ const Carousel = createReactClass({
 
       let nextSlideShouldLoad = false;
       if (self.props.lazyLoad && nextSlidesToLoad) {
-        nextSlideShouldLoad = index <= self.state.currentSlide + nextSlidesToLoad
-        if (self.props.wrapAround) {
-
+        nextSlideShouldLoad = (index <= self.state.currentSlide + nextSlidesToLoad) && index >= self.state.currentSlide;
+        if (self.props.lazyLoad && (self.state.currentSlide + nextSlidesToLoad > self.state.slideCount)) {
+          const breakpoint = self.state.currentSlide + nextSlidesToLoad - self.state.slideCount;
+          nextSlideShouldLoad = index <= breakpoint;
         }
       }
 
       let prevSlideShouldLoad = false;
       if (self.props.lazyLoad && prevSlidesToLoad) {
-        prevSlideShouldLoad = index >= self.state.currentSlide - prevSlidesToLoad;
+        prevSlideShouldLoad = index >= self.state.currentSlide - prevSlidesToLoad && index <= self.state.currentSlide;
+        if (self.props.wrapAround && self.state.currentSlide - prevSlidesToLoad < 0) {
+          const breakpoint = self.state.slideCount + self.state.currentSlide - prevSlidesToLoad;
+          prevSlideShouldLoad = index >= breakpoint;
+        }
       }
 
-      if (!self.props.lazyLoad || (start <= index && index < end) || (nextSlideShouldLoad && prevSlideShouldLoad)) {
+      if (!self.props.lazyLoad || (start <= index && index < end) || (nextSlideShouldLoad || prevSlideShouldLoad)) {
         return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>;
       }
     });
