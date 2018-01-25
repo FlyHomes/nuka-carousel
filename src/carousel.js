@@ -87,6 +87,8 @@ const Carousel = createReactClass({
     vertical: PropTypes.bool,
     width: PropTypes.string,
     wrapAround: PropTypes.bool,
+    nextSlidesToLoad: PropTypes.number,
+    prevSlidesToLoad: PropTypes.number
   },
 
   getDefaultProps() {
@@ -618,8 +620,24 @@ const Carousel = createReactClass({
     var positionValue = this.props.vertical ? this.getTweeningValue('top') : this.getTweeningValue('left');
     const start = Math.max(this.state.currentSlide - this.props.slidesToShow, 0);
     const end = Math.min(this.state.currentSlide + (2 * this.props.slidesToShow), this.state.slideCount);
+    const nextSlidesToLoad = this.props.nextSlidesToLoad;
+    const prevSlidesToLoad = this.props.prevSlidesToLoad;
     return React.Children.map(children, function(child, index) {
-      if (!self.props.lazyLoad || (start <= index && index < end)) {
+
+      let nextSlideShouldLoad = false;
+      if (self.props.lazyLoad && nextSlidesToLoad) {
+        nextSlideShouldLoad = index <= self.state.currentSlide + nextSlidesToLoad
+        if (self.props.wrapAround) {
+
+        }
+      }
+
+      let prevSlideShouldLoad = false;
+      if (self.props.lazyLoad && prevSlidesToLoad) {
+        prevSlideShouldLoad = index >= self.state.currentSlide - prevSlidesToLoad;
+      }
+
+      if (!self.props.lazyLoad || (start <= index && index < end) || (nextSlideShouldLoad && prevSlideShouldLoad)) {
         return <li className="slider-slide" style={self.getSlideStyles(index, positionValue)} key={index}>{child}</li>;
       }
     });

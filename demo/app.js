@@ -51,7 +51,7 @@ const makeChildren = n => {
 
 const LazyCarousel = ({count, ...props}) => {
   return (
-    <Carousel {...props} lazyLoad={true}>
+    <Carousel {...props} lazyLoad={true} wrapAround={true} nextSlidesToLoad={3} prevSlidesToLoad={3}>
       {makeChildren(count)}
     </Carousel>
   );
