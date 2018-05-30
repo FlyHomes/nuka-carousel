@@ -681,6 +681,7 @@ const Carousel = createReactClass({
 
     slidesToScroll = props.slidesToScroll;
     frame = this.refs.frame;
+    if (!frame.childNodes || !frame.childNodes[0]) return;
     const slides = frame.childNodes[0].childNodes;
 
     if (this.props.vertical) {
